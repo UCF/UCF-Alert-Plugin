@@ -1,7 +1,7 @@
 <?php
 /*
 Plugin Name: UCF Alert
-Description: Contains shortcode and widget for displaying latest alerts from ucf.edu/alert.
+Description: Contains shortcode and functions for displaying latest alerts from ucf.edu/alert.
 Version: 1.0.0
 Author: UCF Web Communications
 License: GPL3
@@ -41,13 +41,13 @@ register_deactivation_hook( UCF_ALERT__PLUGIN_FILE, 'ucf_alert_plugin_deactivati
 /**
  * Plugin-dependent actions:
  **/
-add_action( 'plugins_loaded', function() {
-	// If the `WP-Shortcode-Interface` plugin is installed, add the shortcode
-	// definitions.
-	if ( class_exists( 'WP_SCIF_Config' ) ) {
-		add_filter( 'wp_scif_add_shortcode', 'ucf_alert_shortcode_interface', 10, 1 );
+if ( ! function_exists( 'ucf_alert_init' ) ) {
+	function ucf_alert_init() {
+		// If the `WP-Shortcode-Interface` plugin is installed, add the shortcode
+		// definitions.
+		if ( class_exists( 'WP_SCIF_Config' ) ) {
+			add_filter( 'wp_scif_add_shortcode', 'ucf_alert_shortcode_interface', 10, 1 );
+		}
 	}
-
-} );
-
-?>
+	add_action( 'plugins_loaded', 'ucf_alert_init' );
+}

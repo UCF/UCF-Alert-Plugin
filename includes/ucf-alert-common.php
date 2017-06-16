@@ -43,7 +43,7 @@ if ( !function_exists( 'ucf_alert_display_classic' ) ) {
 		if ( ! is_array( $items ) ) { $items = array( $items ); }
 		ob_start();
 	?>
-	<!-- TODO -->
+	TODO
 	<?php
 		echo ob_get_clean();
 	}

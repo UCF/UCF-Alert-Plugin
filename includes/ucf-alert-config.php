@@ -10,7 +10,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			$option_prefix = 'ucf_alert_',
 			$option_defaults = array(
 				'layout'      => 'classic',
-				'feed_url'    => '', // TODO
+				'feed_url'    => 'http://www.ucf.edu/alert/feed/?post_type=alert',
 				'include_css' => true
 			);
 
@@ -63,8 +63,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				'include_css' => get_option( self::$option_prefix . 'include_css' )
 			);
 
-			$configurable_defaults = self::format_options( $configurable_defaults );
-
 			// Force configurable options to override $defaults, even if they are empty:
 			$defaults = array_merge( $defaults, $configurable_defaults );
 
@@ -72,35 +70,9 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		}
 
 		/**
-		 * Returns an array with plugin defaults applied.
-		 *
-		 * @param array $list
-		 * @param boolean $list_keys_only Modifies results to only return array key
-		 *                                values present in $list.
-		 * @return array
-		 **/
-		public static function apply_option_defaults( $list, $list_keys_only=false ) {
-			$defaults = self::get_option_defaults();
-			$options = array();
-
-			if ( $list_keys_only ) {
-				foreach ( $list as $key => $val ) {
-					$options[$key] = !empty( $val ) ? $val : $defaults[$key];
-				}
-			}
-			else {
-				$options = array_merge( $defaults, $list );
-			}
-
-			$options = self::format_options( $options );
-
-			return $options;
-		}
-
-		/**
 		 * Performs typecasting, sanitization, etc on an array of plugin options.
 		 *
-		 * @param array $list
+		 * @param array $list | Assoc. array of plugin options, e.g. [ 'option_name' => 'val', ... ]
 		 * @return array
 		 **/
 		public static function format_options( $list ) {
@@ -118,6 +90,37 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		}
 
 		/**
+		 * Applies formatting to a single option. Intended to be passed to the
+		 * 'option_{$option}' hook.
+		 **/
+		public static function format_option( $value, $option_name ) {
+			$option_formatted = self::format_options( array( $option_name => $value ) );
+			return $option_formatted[$option_name];
+		}
+
+		/**
+		 * Applies formatting to an array of shortcode attributes. Intended to
+		 * be passed to the 'shortcode_atts_sc_ucf_alert' hook.
+		 **/
+		public static function format_sc_atts( $out, $pairs, $atts, $shortcode ) {
+			return self::format_options( $out );
+		}
+
+		/**
+		 * Adds filters for shortcode and plugin options that apply our
+		 * formatting rules to attribute/option values.
+		 **/
+		public static function add_option_formatting_filters() {
+			// Options
+			$defaults = self::$option_defaults;
+			foreach ( $defaults as $option => $default ) {
+				add_filter( 'option_{$option}', array( 'UCF_Alert_Config', 'format_option' ), 10, 2 );
+			}
+			// Shortcode atts
+			add_filter( 'shortcode_atts_sc_ucf_alert', array( 'UCF_Alert_Config', 'format_sc_atts' ), 10, 4 );
+		}
+
+		/**
 		 * Convenience method for returning an option from the WP Options API
 		 * or a plugin option default.
 		 *
@@ -127,14 +130,10 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static function get_option_or_default( $option_name ) {
 			// Handle $option_name passed in with or without self::$option_prefix applied:
 			$option_name_no_prefix = str_replace( self::$option_prefix, '', $option_name );
-			$option_name = self::$option_prefix . $option_name_no_prefix;
+			$option_name           = self::$option_prefix . $option_name_no_prefix;
+			$defaults              = self::get_option_defaults();
 
-			$option = get_option( $option_name );
-			$option_formatted = self::apply_option_defaults( array(
-				$option_name_no_prefix => $option
-			), true );
-
-			return $option_formatted[$option_name_no_prefix];
+			return get_option( $option_name, $defaults[$option_name_no_prefix] );
 		}
 
 		/**
@@ -276,7 +275,10 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 
 	}
 
+	// Register settings and options.
 	add_action( 'admin_init', array( 'UCF_Alert_Config', 'settings_init' ) );
 	add_action( 'admin_menu', array( 'UCF_Alert_Config', 'add_options_page' ) );
 
+	// Apply custom formatting to shortcode attributes and options.
+	UCF_Alert_Config::add_option_formatting_filters();
 }
