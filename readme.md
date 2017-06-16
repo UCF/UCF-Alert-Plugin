@@ -1,11 +1,11 @@
 # UCF Alert Plugin #
 
-Provides a shortcode, widget, functions, and default styles for displaying UCF alerts.
+Provides a shortcode, functions, and default styles for displaying UCF alerts.
 
 
 ## Description ##
 
-This plugin provides a shortcode, widget, helper functions, and default styles for displaying latest alerts from [ucf.edu/alert](https://ucf.edu/alert).  It is written to work out-of-the-box for non-programmers, but is also extensible and customizable for developers.
+This plugin provides a shortcode, helper functions, and default styles for displaying latest alerts from [ucf.edu/alert](https://ucf.edu/alert).  It is written to work out-of-the-box for non-programmers, but is also extensible and customizable for developers.
 
 
 ## Installation ##
