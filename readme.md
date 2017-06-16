@@ -7,6 +7,8 @@ Provides a shortcode, functions, and default styles for displaying UCF alerts.
 
 This plugin provides a shortcode, helper functions, and default styles for displaying latest alerts from [ucf.edu/alert](https://ucf.edu/alert).  It is written to work out-of-the-box for non-programmers, but is also extensible and customizable for developers.
 
+Note: jQuery is *required* for the JavaScript included with this plugin to work.
+
 
 ## Installation ##
 

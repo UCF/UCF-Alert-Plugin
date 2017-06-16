@@ -69,13 +69,35 @@ if ( !function_exists( 'ucf_alert_display_classic_after' ) ) {
 if ( ! function_exists( 'ucf_alert_enqueue_assets' ) ) {
 	function ucf_alert_enqueue_assets() {
 		$include_css = UCF_Alert_Config::get_option_or_default( 'include_css' );
+		$deps = apply_filters( 'ucf_alert_style_deps', array() );
 
 		if ( $include_css ) {
-			wp_enqueue_style( 'ucf_alert_css', plugins_url( 'static/css/ucf-alert.min.css', UCF_ALERT__PLUGIN_FILE ), false, false, 'all' );
+			wp_enqueue_style( 'ucf_alert_css', plugins_url( 'static/css/ucf-alert.min.css', UCF_ALERT__PLUGIN_FILE ), $deps, false, 'screen' );
 		}
 	}
 
 	add_action( 'wp_enqueue_scripts', 'ucf_alert_enqueue_assets' );
+}
+
+if ( ! function_exists( 'ucf_alert_enqueue_scripts' ) ) {
+	function ucf_alert_enqueue_scripts() {
+		$include_js = UCF_Alert_Config::get_option_or_default( 'include_js_main' );
+		$include_js_deps = UCF_Alert_Config::get_option_or_default( 'include_js_deps' );
+		$deps = array( 'jquery' );
+		if ( $include_js_deps ) {
+			$deps[] = 'js-cookie';
+		}
+		$deps = apply_filters( 'ucf_alert_script_deps', $deps );
+
+		if ( $include_js ) {
+			if ( $include_js_deps ) {
+				wp_enqueue_script( 'js-cookie', 'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js', false, false, true );
+			}
+			wp_enqueue_script( 'ucf_alert_js', plugins_url( 'static/js/ucf-alert.min.js', UCF_ALERT__PLUGIN_FILE ), $deps, false, true );
+		}
+	}
+
+	add_action( 'wp_enqueue_scripts', 'ucf_alert_enqueue_scripts' );
 }
 
 if ( ! function_exists( 'ucf_alert_whitelist_host' ) ) {

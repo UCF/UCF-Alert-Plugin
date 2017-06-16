@@ -9,9 +9,11 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static
 			$option_prefix = 'ucf_alert_',
 			$option_defaults = array(
-				'layout'      => 'classic',
-				'feed_url'    => 'http://www.ucf.edu/alert/feed/?post_type=alert',
-				'include_css' => true
+				'layout'          => 'classic',
+				'feed_url'        => 'http://www.ucf.edu/alert/feed/?post_type=alert',
+				'include_css'     => true,
+				'include_js_main' => true,
+				'include_js_deps' => true
 			);
 
 		public static function get_layouts() {
@@ -35,6 +37,8 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 
 			add_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] );
 			add_option( self::$option_prefix . 'include_css', $defaults['include_css'] );
+			add_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] );
+			add_option( self::$option_prefix . 'include_js_deps', $defaults['include_js_deps'] );
 		}
 
 		/**
@@ -46,6 +50,8 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static function delete_options() {
 			delete_option( self::$option_prefix . 'feed_url' );
 			delete_option( self::$option_prefix . 'include_css' );
+			delete_option( self::$option_prefix . 'include_js_main' );
+			delete_option( self::$option_prefix . 'include_js_deps' );
 		}
 
 		/**
@@ -59,8 +65,10 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 
 			// Apply default values configurable within the options page:
 			$configurable_defaults = array(
-				'feed_url'    => get_option( self::$option_prefix . 'feed_url' ),
-				'include_css' => get_option( self::$option_prefix . 'include_css' )
+				'feed_url'        => get_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] ),
+				'include_css'     => get_option( self::$option_prefix . 'include_css', $defaults['include_css'] ),
+				'include_js_main' => get_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] ),
+				'include_js_deps' => get_option( self::$option_prefix . 'include_js_deps', $defaults['include_js_deps'] )
 			);
 
 			// Force configurable options to override $defaults, even if they are empty:
@@ -79,6 +87,8 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			foreach ( $list as $key => $val ) {
 				switch ( $key ) {
 					case 'include_css':
+					case 'include_js_main':
+					case 'include_js_deps':
 						$list[$key] = filter_var( $val, FILTER_VALIDATE_BOOLEAN );
 						break;
 					default:
@@ -143,6 +153,8 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			// Register settings
 			register_setting( 'ucf_alert', self::$option_prefix . 'feed_url' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_css' );
+			register_setting( 'ucf_alert', self::$option_prefix . 'include_js_main' );
+			register_setting( 'ucf_alert', self::$option_prefix . 'include_js_deps' );
 
 			// Register setting sections
 			add_settings_section(
@@ -174,6 +186,30 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				array(  // extra arguments to pass to the callback function
 					'label_for'   => self::$option_prefix . 'include_css',
 					'description' => 'Include the default css stylesheet for alerts within the theme.<br>Leave this checkbox checked unless your theme provides custom styles for alerts.',
+					'type'        => 'checkbox'
+				)
+			);
+			add_settings_field(
+				self::$option_prefix . 'include_js_main',
+				'Include Default JS',  // formatted field title
+				array( 'UCF_Alert_Config', 'display_settings_field' ),  // display callback
+				'ucf_alert',  // settings page slug
+				'ucf_alert_section_general',  // option section slug
+				array(  // extra arguments to pass to the callback function
+					'label_for'   => self::$option_prefix . 'include_js_main',
+					'description' => 'Include the default JavaScript for alerts within the theme.<br>Leave this checkbox checked unless your theme provides custom display logic for alerts.',
+					'type'        => 'checkbox'
+				)
+			);
+			add_settings_field(
+				self::$option_prefix . 'include_js_deps',
+				'Include JS Dependencies',  // formatted field title
+				array( 'UCF_Alert_Config', 'display_settings_field' ),  // display callback
+				'ucf_alert',  // settings page slug
+				'ucf_alert_section_general',  // option section slug
+				array(  // extra arguments to pass to the callback function
+					'label_for'   => self::$option_prefix . 'include_js_deps',
+					'description' => 'Include the JavaScript dependencies for alerts within the theme. Default JS must be enabled for dependencies to be loaded.<br>Leave this checkbox checked unless your theme provides dependent scripts (js-cookie) already.',
 					'type'        => 'checkbox'
 				)
 			);
