@@ -14,7 +14,6 @@ if ( ! defined( 'WPINC' ) ) {
 define( 'UCF_ALERT__PLUGIN_FILE', __FILE__ );
 
 require_once 'includes/ucf-alert-config.php';
-require_once 'includes/ucf-alert-feed.php';
 require_once 'includes/ucf-alert-common.php';
 require_once 'includes/ucf-alert-shortcode.php';
 

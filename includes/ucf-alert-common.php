@@ -6,18 +6,18 @@
 if ( !class_exists( 'UCF_Alert_Common' ) ) {
 
 	class UCF_Alert_Common {
-		public function display_alert( $items, $layout, $display_type='default' ) {
+		public function display_alert( $layout, $id ) {
 
 			if ( has_action( 'ucf_alert_display_' . $layout . '_before' ) ) {
-				do_action( 'ucf_alert_display_' . $layout . '_before', $items, $display_type );
+				do_action( 'ucf_alert_display_' . $layout . '_before', $id );
 			}
 
 			if ( has_action( 'ucf_alert_display_' . $layout  ) ) {
-				do_action( 'ucf_alert_display_' . $layout, $items, $display_type );
+				do_action( 'ucf_alert_display_' . $layout );
 			}
 
 			if ( has_action( 'ucf_alert_display_' . $layout . '_after' ) ) {
-				do_action( 'ucf_alert_display_' . $layout . '_after', $items, $display_type );
+				do_action( 'ucf_alert_display_' . $layout . '_after' );
 			}
 		}
 	}
@@ -25,44 +25,53 @@ if ( !class_exists( 'UCF_Alert_Common' ) ) {
 
 if ( !function_exists( 'ucf_alert_display_classic_before' ) ) {
 
-	function ucf_alert_display_classic_before( $items, $display_type ) {
+	function ucf_alert_display_classic_before( $id ) {
 		ob_start();
 	?>
-		<div class="ucf-alert ucf-alert-classic">
+		<div data-script-id="<?php echo $id; ?>" class="ucf-alert-wrapper"></div>
+		<script type="text/html" id="<?php echo $id; ?>">
+			<div class="ucf-alert ucf-alert-classic" data-alert-id="">
 	<?php
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_classic_before', 'ucf_alert_display_classic_before', 10, 3 );
+	add_action( 'ucf_alert_display_classic_before', 'ucf_alert_display_classic_before', 10, 1 );
 
 }
 
 if ( !function_exists( 'ucf_alert_display_classic' ) ) {
 
-	function ucf_alert_display_classic( $items, $title ) {
-		if ( ! is_array( $items ) ) { $items = array( $items ); }
+	function ucf_alert_display_classic() {
 		ob_start();
 	?>
-	TODO
+		<div class="ucf-alert-type ucf-alert-icon"></div>
+		<a class="ucf-alert-content" href="<?php echo UCF_Alert_Config::get_option_or_default( 'alerts_url' ); ?>">
+			<strong class="ucf-alert-title"></strong>
+			<div class="ucf-alert-body"></div>
+			<div class="ucf-alert-cta">
+				<?php echo UCF_Alert_Config::get_option_or_default( 'cta' ); ?>
+			</div>
+		</a>
 	<?php
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_classic', 'ucf_alert_display_classic', 10, 3 );
+	add_action( 'ucf_alert_display_classic', 'ucf_alert_display_classic', 10, 0 );
 
 }
 
 if ( !function_exists( 'ucf_alert_display_classic_after' ) ) {
 
-	function ucf_alert_display_classic_after( $items, $title ) {
+	function ucf_alert_display_classic_after() {
 		ob_start();
 	?>
-		</div>
+			</div>
+		</script>
 	<?php
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_classic_after', 'ucf_alert_display_classic_after', 10, 3 );
+	add_action( 'ucf_alert_display_classic_after', 'ucf_alert_display_classic_after', 10, 0 );
 
 }
 
@@ -86,10 +95,17 @@ if ( ! function_exists( 'ucf_alert_enqueue_assets' ) ) {
 		$js_deps = apply_filters( 'ucf_alert_script_deps', $js_deps );
 
 		if ( $include_js ) {
+			wp_register_script( 'ucf_alert_js', plugins_url( 'static/js/ucf-alert.min.js', UCF_ALERT__PLUGIN_FILE ), $js_deps, false, true );
+			wp_localize_script( 'ucf_alert_js', 'ucfalert', array(
+				'url' => UCF_Alert_Config::get_option_or_default( 'feed_url' ),
+				'refreshInterval' => UCF_Alert_Config::get_option_or_default( 'refresh_interval' ) * 1000
+			));
+
 			if ( $include_js_deps ) {
 				wp_enqueue_script( 'js-cookie', 'https://cdnjs.cloudflare.com/ajax/libs/js-cookie/2.1.4/js.cookie.min.js', false, false, true );
 			}
-			wp_enqueue_script( 'ucf_alert_js', plugins_url( 'static/js/ucf-alert.min.js', UCF_ALERT__PLUGIN_FILE ), $js_deps, false, true );
+
+			wp_enqueue_script( 'ucf_alert_js' );
 		}
 	}
 

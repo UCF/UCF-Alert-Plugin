@@ -7,10 +7,11 @@ if ( !function_exists( 'sc_ucf_alert' ) ) {
 
 	function sc_ucf_alert( $atts, $content='' ) {
 		$atts = shortcode_atts( UCF_Alert_Config::get_option_defaults(), $atts, 'sc_ucf_alert' );
+		$id = 'ucf-alert-SOMEIDHERE'; //TODO
 
 		ob_start();
 
-		echo UCF_Alert_Common::display_alert( $items, $atts['layout'], 'shortcode' );
+		echo UCF_Alert_Common::display_alert( $atts['layout'], $id );
 
 		return ob_get_clean(); // Shortcode must *return*!  Do not echo the result!
 	}

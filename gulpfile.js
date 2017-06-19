@@ -9,6 +9,7 @@ var gulp = require('gulp'),
     include = require('gulp-include'),
     eslint = require('gulp-eslint'),
     isFixed = require('gulp-eslint-if-fixed'),
+    babel = require('gulp-babel'),
     uglify = require('gulp-uglify'),
     readme = require('gulp-readme-to-markdown'),
     browserSync = require('browser-sync').create();
@@ -75,6 +76,7 @@ gulp.task('js-main', function() {
   return gulp.src(config.src.jsPath + '/ucf-alert.js')
     .pipe(include())
       .on('error', console.log)
+    .pipe(babel())
     .pipe(uglify())
     .pipe(rename('ucf-alert.min.js'))
     .pipe(gulp.dest(config.dist.jsPath))

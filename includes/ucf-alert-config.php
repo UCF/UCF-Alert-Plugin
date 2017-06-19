@@ -9,11 +9,14 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static
 			$option_prefix = 'ucf_alert_',
 			$option_defaults = array(
-				'layout'          => 'classic',
-				'feed_url'        => 'http://www.ucf.edu/alert/feed/?post_type=alert',
-				'include_css'     => true,
-				'include_js_main' => true,
-				'include_js_deps' => true
+				'layout'           => 'classic',
+				'feed_url'         => 'https://www.ucf.edu/alert/feed/?post_type=alert',
+				'alerts_url'       => 'https://www.ucf.edu/alert/',
+				'cta'              => 'More Information',
+				'refresh_interval' => 3,
+				'include_css'      => true,
+				'include_js_main'  => true,
+				'include_js_deps'  => true
 			);
 
 		public static function get_layouts() {
@@ -36,6 +39,9 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			$defaults = self::$option_defaults; // don't use self::get_option_defaults() here (default options haven't been set yet)
 
 			add_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] );
+			add_option( self::$option_prefix . 'alerts_url', $defaults['alerts_url'] );
+			add_option( self::$option_prefix . 'cta', $defaults['cta'] );
+			add_option( self::$option_prefix . 'refresh_interval', $defaults['refresh_interval'] );
 			add_option( self::$option_prefix . 'include_css', $defaults['include_css'] );
 			add_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] );
 			add_option( self::$option_prefix . 'include_js_deps', $defaults['include_js_deps'] );
@@ -49,6 +55,9 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		 **/
 		public static function delete_options() {
 			delete_option( self::$option_prefix . 'feed_url' );
+			delete_option( self::$option_prefix . 'alerts_url' );
+			delete_option( self::$option_prefix . 'cta' );
+			delete_option( self::$option_prefix . 'refresh_interval' );
 			delete_option( self::$option_prefix . 'include_css' );
 			delete_option( self::$option_prefix . 'include_js_main' );
 			delete_option( self::$option_prefix . 'include_js_deps' );
@@ -65,10 +74,13 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 
 			// Apply default values configurable within the options page:
 			$configurable_defaults = array(
-				'feed_url'        => get_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] ),
-				'include_css'     => get_option( self::$option_prefix . 'include_css', $defaults['include_css'] ),
-				'include_js_main' => get_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] ),
-				'include_js_deps' => get_option( self::$option_prefix . 'include_js_deps', $defaults['include_js_deps'] )
+				'feed_url'         => get_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] ),
+				'alerts_url'       => get_option( self::$option_prefix . 'alerts_url', $defaults['alerts_url'] ),
+				'cta'              => get_option( self::$option_prefix . 'cta', $defaults['cta'] ),
+				'refresh_interval' => get_option( self::$option_prefix . 'refresh_interval', $defaults['refresh_interval'] ),
+				'include_css'      => get_option( self::$option_prefix . 'include_css', $defaults['include_css'] ),
+				'include_js_main'  => get_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] ),
+				'include_js_deps'  => get_option( self::$option_prefix . 'include_js_deps', $defaults['include_js_deps'] )
 			);
 
 			// Force configurable options to override $defaults, even if they are empty:
@@ -90,6 +102,9 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 					case 'include_js_main':
 					case 'include_js_deps':
 						$list[$key] = filter_var( $val, FILTER_VALIDATE_BOOLEAN );
+						break;
+					case 'refresh_interval':
+						$list[$key] = intval( $val );
 						break;
 					default:
 						break;
@@ -152,6 +167,9 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static function settings_init() {
 			// Register settings
 			register_setting( 'ucf_alert', self::$option_prefix . 'feed_url' );
+			register_setting( 'ucf_alert', self::$option_prefix . 'alerts_url' );
+			register_setting( 'ucf_alert', self::$option_prefix . 'cta' );
+			register_setting( 'ucf_alert', self::$option_prefix . 'refresh_interval' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_css' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_js_main' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_js_deps' );
@@ -173,7 +191,43 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				'ucf_alert_section_general',  // option section slug
 				array(  // extra arguments to pass to the callback function
 					'label_for'   => self::$option_prefix . 'feed_url',
-					'description' => 'The feed URL to use for alerts from UCF\'s alert system.',
+					'description' => 'The RSS feed URL to use for alerts from UCF\'s alert system.',
+					'type'        => 'text'
+				)
+			);
+			add_settings_field(
+				self::$option_prefix . 'alerts_url',
+				'UCF Alert URL',  // formatted field title
+				array( 'UCF_Alert_Config', 'display_settings_field' ), // display callback
+				'ucf_alert',  // settings page slug
+				'ucf_alert_section_general',  // option section slug
+				array(  // extra arguments to pass to the callback function
+					'label_for'   => self::$option_prefix . 'alerts_url',
+					'description' => 'The URL to point alert clickthroughs to.',
+					'type'        => 'text'
+				)
+			);
+			add_settings_field(
+				self::$option_prefix . 'cta',
+				'Alert Call-to-Action',  // formatted field title
+				array( 'UCF_Alert_Config', 'display_settings_field' ), // display callback
+				'ucf_alert',  // settings page slug
+				'ucf_alert_section_general',  // option section slug
+				array(  // extra arguments to pass to the callback function
+					'label_for'   => self::$option_prefix . 'cta',
+					'description' => 'Call-to-action blurb to display under the active alert.',
+					'type'        => 'text'
+				)
+			);
+			add_settings_field(
+				self::$option_prefix . 'refresh_interval',
+				'Refresh Interval',  // formatted field title
+				array( 'UCF_Alert_Config', 'display_settings_field' ), // display callback
+				'ucf_alert',  // settings page slug
+				'ucf_alert_section_general',  // option section slug
+				array(  // extra arguments to pass to the callback function
+					'label_for'   => self::$option_prefix . 'refresh_interval',
+					'description' => 'Interval, in seconds, at which new alert data should be fetched.',
 					'type'        => 'text'
 				)
 			);
@@ -197,7 +251,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				'ucf_alert_section_general',  // option section slug
 				array(  // extra arguments to pass to the callback function
 					'label_for'   => self::$option_prefix . 'include_js_main',
-					'description' => 'Include the default JavaScript for alerts within the theme.<br>Leave this checkbox checked unless your theme provides custom display logic for alerts.',
+					'description' => 'Include the default JavaScript for alerts within the theme.<br>Leave this checkbox checked unless your theme provides custom fetch and display logic for alerts.',
 					'type'        => 'checkbox'
 				)
 			);
