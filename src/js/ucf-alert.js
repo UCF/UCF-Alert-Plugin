@@ -55,11 +55,12 @@
     const $alertInner = $alert.hasClass('ucf-alert') ? $alert : $alert.find('.ucf-alert');
     const $title      = $alert.find('.ucf-alert-title');
     const $body       = $alert.find('.ucf-alert-body');
-    const $type       = $alert.find('.ucf-alert-type');
     const $closeBtn   = $alert.find('.ucf-alert-close');
 
     if ($alertInner.length) {
-      $alertInner.attr('data-alert-id', alertData.alertID);
+      $alertInner
+        .attr('data-alert-id', alertData.alertID)
+        .addClass(`ucf-alert-type-${alertData.type}`);
     }
 
     if ($title.length) {
@@ -68,10 +69,6 @@
 
     if ($body.length) {
       $body.text(alertData.description);
-    }
-
-    if ($type.length) {
-      $type.addClass(`ucf-alert-type-${alertData.type}`);
     }
 
     if ($closeBtn.length) {

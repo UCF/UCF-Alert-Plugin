@@ -1,3 +1,72 @@
 .ucf-alert-classic {
+  padding: 1rem;
+  width: 100%;
 
+  // clearfix
+  &::after {
+    clear: both;
+    content: '';
+    display: block;
+  }
+
+  &.ucf-alert-type-general,
+  &.ucf-alert-type-weather,
+  &.ucf-alert-type-police,
+  &.ucf-alert-type-update {
+    background-color: #fecfc4;
+  }
+
+  &.ucf-alert-type-message {
+    background-color: #dcf3f8;
+  }
+
+  .ucf-alert-close {
+    -webkit-appearance: none;
+    background: transparent;
+    border: 0;
+    color: #000;
+    cursor: pointer;
+    float: right;
+    font-family: Verdana, sans-serif;
+    font-size: 1.5rem;
+    font-weight: normal;
+    opacity: .5;
+    padding-bottom: 0;
+    padding-left: 1rem;
+    padding-right: 0;
+    padding-top: 0;
+
+    &:hover,
+    &:active,
+    &:focus {
+      opacity: 1;
+    }
+  }
+
+  .ucf-alert-content {
+    color: #000;
+    display: block;
+
+    &:hover,
+    &:active,
+    &:focus {
+      color: #000;
+      text-decoration: none;
+    }
+  }
+
+  .ucf-alert-title {
+    display: block;
+    font-size: 1.5rem;
+  }
+
+  .ucf-alert-body {
+    font-size: 1rem;
+  }
+
+  .ucf-alert-cta {
+    font-size: 1rem;
+    font-weight: bold;
+    margin-top: .5rem;
+  }
 }
