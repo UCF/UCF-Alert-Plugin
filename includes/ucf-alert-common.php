@@ -51,7 +51,7 @@ if ( !function_exists( 'ucf_alert_display_classic' ) ) {
 	function ucf_alert_display_classic() {
 		ob_start();
 	?>
-		<button class="ucf-alert-close" aria-label="Close alert">&times;</button>
+		<button type="button" class="ucf-alert-close" aria-label="Close alert"><span aria-hidden="true">&times;</span></button>
 		<a class="ucf-alert-content" href="<?php echo UCF_Alert_Config::get_option_or_default( 'alerts_url' ); ?>">
 			<strong class="ucf-alert-title"></strong>
 			<div class="ucf-alert-body"></div>
