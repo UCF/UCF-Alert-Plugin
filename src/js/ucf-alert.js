@@ -56,6 +56,7 @@
     const $title      = $alert.find('.ucf-alert-title');
     const $body       = $alert.find('.ucf-alert-body');
     const $type       = $alert.find('.ucf-alert-type');
+    const $closeBtn   = $alert.find('.ucf-alert-close');
 
     if ($alertInner.length) {
       $alertInner.attr('data-alert-id', alertData.alertID);
@@ -73,6 +74,11 @@
       $type.addClass(`ucf-alert-type-${alertData.type}`);
     }
 
+    if ($closeBtn.length) {
+      $closeBtn.on('click', () => {
+        hideAlert(alertData.alertID);
+      });
+    }
 
     return $alert;
   }
@@ -100,14 +106,32 @@
   }
 
   //
+  // Returns the name for a cookie by its alert ID.
+  //
+  function getCookieName(alertID) {
+    return `ucf_alert_display_${alertID}`;
+  }
+
+  //
   // Returns true/false for whether a cookie is set that signifies a
   // particular alert has been disabled by the user.
   //
-  function userHidAlert(/* alertID*/) {
-    // if (/* cookie is set */) { // TODO
-    //   return true;
-    // }
+  function userHidAlert(alertID) {
+    if (Cookies.get(getCookieName(alertID)) === 'hide') {
+      return true;
+    }
     return false;
+  }
+
+  //
+  // Hides all alerts on the page with the corresponding alert ID, and
+  // sets a cookie to keep them hidden across pageviews.
+  //
+  function hideAlert(alertID) {
+    $(`.ucf-alert[data-alert-id="${alertID}"]`).hide();
+    Cookies.set(getCookieName(alertID), 'hide', {
+      domain: UCFAlert.domain
+    });
   }
 
   //
@@ -141,7 +165,7 @@
 
   function fetchAlert() {
     return $.ajax({
-      url: ucfalert.url,
+      url: UCFAlert.url,
       cache: false,
       dataType: 'xml',
       success: successHandler,
@@ -153,7 +177,7 @@
     $alertWrappers = $('.ucf-alert-wrapper');
     if ($alertWrappers.length) {
       fetchAlert();
-      setInterval(fetchAlert, parseInt(ucfalert.refreshInterval, 10));
+      setInterval(fetchAlert, parseInt(UCFAlert.refreshInterval, 10));
     }
   }
 

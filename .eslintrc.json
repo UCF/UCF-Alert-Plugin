@@ -7,8 +7,8 @@
     "jquery": true
   },
   "globals": {
-    "js-cookie": true,
-    "ucfalert": true
+    "Cookies": true,
+    "UCFAlert": true
   },
   "extends": "eslint:recommended",
   "parserOptions": {
