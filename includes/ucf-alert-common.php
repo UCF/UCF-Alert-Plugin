@@ -51,7 +51,7 @@ if ( !function_exists( 'ucf_alert_display_classic' ) ) {
 	function ucf_alert_display_classic() {
 		ob_start();
 	?>
-		<button class="ucf-alert-close" aria-label="Close alert">&times;</button>
+		<button type="button" class="ucf-alert-close" aria-label="Close alert"><span aria-hidden="true">&times;</span></button>
 		<a class="ucf-alert-content" href="<?php echo UCF_Alert_Config::get_option_or_default( 'alerts_url' ); ?>">
 			<strong class="ucf-alert-title"></strong>
 			<div class="ucf-alert-body"></div>
@@ -102,12 +102,11 @@ if ( ! function_exists( 'ucf_alert_enqueue_assets' ) ) {
 		$js_deps = apply_filters( 'ucf_alert_script_deps', $js_deps );
 
 		if ( $include_js ) {
-			$site_url = parse_url( get_site_url() );
 			wp_register_script( 'ucf_alert_js', plugins_url( 'static/js/ucf-alert.min.js', UCF_ALERT__PLUGIN_FILE ), $js_deps, false, true );
 			wp_localize_script( 'ucf_alert_js', 'UCFAlert', array(
 				'url' => UCF_Alert_Config::get_option_or_default( 'feed_url' ),
 				'refreshInterval' => UCF_Alert_Config::get_option_or_default( 'refresh_interval' ) * 1000,
-				'domain' => $site_url['host']
+				'domain' => UCF_Alert_Config::get_option_or_default( 'domain' )
 			));
 
 			if ( $include_js_deps ) {
