@@ -13,7 +13,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				'feed_url'         => 'https://www.ucf.edu/alert/feed/?post_type=alert',
 				'alerts_url'       => 'https://www.ucf.edu/alert/',
 				'cta'              => 'More Information',
-				'refresh_interval' => 3,
+				'refresh_interval' => 30,
 				'include_css'      => true,
 				'include_js_main'  => true,
 				'include_js_deps'  => true
