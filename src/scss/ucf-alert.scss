@@ -1,1 +1,7 @@
 @import 'layout-classic';
+
+.ucf-alert-wrapper {
+  &:empty {
+    display: none;
+  }
+}

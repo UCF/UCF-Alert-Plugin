@@ -6,7 +6,7 @@
 if ( !class_exists( 'UCF_Alert_Common' ) ) {
 
 	class UCF_Alert_Common {
-		public function display_alert( $layout='classic' ) {
+		public static function display_alert( $layout='classic' ) {
 
 			if ( has_action( 'ucf_alert_display_' . $layout . '_before' ) ) {
 				do_action( 'ucf_alert_display_' . $layout . '_before' );
@@ -20,13 +20,19 @@ if ( !class_exists( 'UCF_Alert_Common' ) ) {
 				do_action( 'ucf_alert_display_' . $layout . '_after' );
 			}
 		}
+
+		// Returns a unique identifier for the alert wrapper element and
+		// corresponding script tag.
+		public static function get_alert_wrapper_id() {
+			return 'ucf-alert-' . wp_rand();
+		}
 	}
 }
 
 if ( !function_exists( 'ucf_alert_display_classic_before' ) ) {
 
 	function ucf_alert_display_classic_before() {
-		$id = 'ucf-alert-' . wp_rand(); // just need some unique identifier here
+		$id = UCF_Alert_Common::get_alert_wrapper_id();
 		ob_start();
 	?>
 		<div data-script-id="<?php echo $id; ?>" class="ucf-alert-wrapper"></div>
