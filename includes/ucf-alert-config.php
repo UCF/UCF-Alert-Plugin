@@ -13,6 +13,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				'feed_url'         => 'https://www.ucf.edu/alert/feed/?post_type=alert',
 				'alerts_url'       => 'https://www.ucf.edu/alert/',
 				'cta'              => 'More Information',
+				'domain'           => 'ucf.edu',
 				'refresh_interval' => 30,
 				'include_css'      => true,
 				'include_js_main'  => true,
@@ -41,6 +42,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			add_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] );
 			add_option( self::$option_prefix . 'alerts_url', $defaults['alerts_url'] );
 			add_option( self::$option_prefix . 'cta', $defaults['cta'] );
+			add_option( self::$option_prefix . 'domain', $defaults['domain'] );
 			add_option( self::$option_prefix . 'refresh_interval', $defaults['refresh_interval'] );
 			add_option( self::$option_prefix . 'include_css', $defaults['include_css'] );
 			add_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] );
@@ -57,6 +59,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			delete_option( self::$option_prefix . 'feed_url' );
 			delete_option( self::$option_prefix . 'alerts_url' );
 			delete_option( self::$option_prefix . 'cta' );
+			delete_option( self::$option_prefix . 'domain' );
 			delete_option( self::$option_prefix . 'refresh_interval' );
 			delete_option( self::$option_prefix . 'include_css' );
 			delete_option( self::$option_prefix . 'include_js_main' );
@@ -77,6 +80,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				'feed_url'         => get_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] ),
 				'alerts_url'       => get_option( self::$option_prefix . 'alerts_url', $defaults['alerts_url'] ),
 				'cta'              => get_option( self::$option_prefix . 'cta', $defaults['cta'] ),
+				'domain'           => get_option( self::$option_prefix . 'domain', $defaults['domain'] ),
 				'refresh_interval' => get_option( self::$option_prefix . 'refresh_interval', $defaults['refresh_interval'] ),
 				'include_css'      => get_option( self::$option_prefix . 'include_css', $defaults['include_css'] ),
 				'include_js_main'  => get_option( self::$option_prefix . 'include_js_main', $defaults['include_js_main'] ),
@@ -169,6 +173,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			register_setting( 'ucf_alert', self::$option_prefix . 'feed_url' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'alerts_url' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'cta' );
+			register_setting( 'ucf_alert', self::$option_prefix . 'domain' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'refresh_interval' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_css' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_js_main' );
@@ -216,6 +221,18 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				array(  // extra arguments to pass to the callback function
 					'label_for'   => self::$option_prefix . 'cta',
 					'description' => 'Call-to-action blurb to display under the active alert.',
+					'type'        => 'text'
+				)
+			);
+			add_settings_field(
+				self::$option_prefix . 'domain',
+				'Alert Cookie Domain',  // formatted field title
+				array( 'UCF_Alert_Config', 'display_settings_field' ), // display callback
+				'ucf_alert',  // settings page slug
+				'ucf_alert_section_general',  // option section slug
+				array(  // extra arguments to pass to the callback function
+					'label_for'   => self::$option_prefix . 'domain',
+					'description' => 'Domain to assign to cookies generated when a user closes alerts manually. Cookies will be visible to the specified domain and its subdomains. Leave this value as-is unless you\'re testing against a development environment outside of the ucf.edu domain.',
 					'type'        => 'text'
 				)
 			);
