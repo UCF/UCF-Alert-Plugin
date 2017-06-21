@@ -9,7 +9,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static
 			$option_prefix = 'ucf_alert_',
 			$option_defaults = array(
-				'layout'           => 'classic',
+				'layout'           => 'default',
 				'feed_url'         => 'https://www.ucf.edu/alert/feed/?post_type=alert',
 				'alerts_url'       => 'https://www.ucf.edu/alert/',
 				'cta'              => 'More Information',
@@ -22,7 +22,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 
 		public static function get_layouts() {
 			$layouts = array(
-				'classic' => 'Classic Layout',
+				'default' => 'Default Layout',
 			);
 
 			$layouts = apply_filters( self::$option_prefix . 'get_layouts', $layouts );
