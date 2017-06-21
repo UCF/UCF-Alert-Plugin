@@ -42,7 +42,7 @@ if ( !function_exists( 'ucf_alert_display_default_before' ) ) {
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_default_before', 'ucf_alert_display_default_before', 10, 1 );
+	add_action( 'ucf_alert_display_default_before', 'ucf_alert_display_default_before', 10, 0 );
 
 }
 
