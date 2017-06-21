@@ -245,7 +245,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				array(  // extra arguments to pass to the callback function
 					'label_for'   => self::$option_prefix . 'refresh_interval',
 					'description' => 'Interval, in seconds, at which new alert data should be fetched.',
-					'type'        => 'text'
+					'type'        => 'number'
 				)
 			);
 			add_settings_field(
