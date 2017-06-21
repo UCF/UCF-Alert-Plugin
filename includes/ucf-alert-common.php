@@ -6,7 +6,7 @@
 if ( !class_exists( 'UCF_Alert_Common' ) ) {
 
 	class UCF_Alert_Common {
-		public static function display_alert( $layout='classic' ) {
+		public static function display_alert( $layout='default' ) {
 
 			if ( has_action( 'ucf_alert_display_' . $layout . '_before' ) ) {
 				do_action( 'ucf_alert_display_' . $layout . '_before' );
@@ -29,26 +29,26 @@ if ( !class_exists( 'UCF_Alert_Common' ) ) {
 	}
 }
 
-if ( !function_exists( 'ucf_alert_display_classic_before' ) ) {
+if ( !function_exists( 'ucf_alert_display_default_before' ) ) {
 
-	function ucf_alert_display_classic_before() {
+	function ucf_alert_display_default_before() {
 		$id = UCF_Alert_Common::get_alert_wrapper_id();
 		ob_start();
 	?>
 		<div data-script-id="<?php echo $id; ?>" class="ucf-alert-wrapper"></div>
 		<script type="text/html" id="<?php echo $id; ?>">
-			<div class="ucf-alert ucf-alert-classic" data-alert-id="" role="alert">
+			<div class="ucf-alert ucf-alert-default" data-alert-id="" role="alert">
 	<?php
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_classic_before', 'ucf_alert_display_classic_before', 10, 1 );
+	add_action( 'ucf_alert_display_default_before', 'ucf_alert_display_default_before', 10, 1 );
 
 }
 
-if ( !function_exists( 'ucf_alert_display_classic' ) ) {
+if ( !function_exists( 'ucf_alert_display_default' ) ) {
 
-	function ucf_alert_display_classic() {
+	function ucf_alert_display_default() {
 		ob_start();
 	?>
 		<button type="button" class="ucf-alert-close" aria-label="Close alert"><span aria-hidden="true">&times;</span></button>
@@ -63,13 +63,13 @@ if ( !function_exists( 'ucf_alert_display_classic' ) ) {
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_classic', 'ucf_alert_display_classic', 10, 0 );
+	add_action( 'ucf_alert_display_default', 'ucf_alert_display_default', 10, 0 );
 
 }
 
-if ( !function_exists( 'ucf_alert_display_classic_after' ) ) {
+if ( !function_exists( 'ucf_alert_display_default_after' ) ) {
 
-	function ucf_alert_display_classic_after() {
+	function ucf_alert_display_default_after() {
 		ob_start();
 	?>
 			</div>
@@ -78,7 +78,7 @@ if ( !function_exists( 'ucf_alert_display_classic_after' ) ) {
 		echo ob_get_clean();
 	}
 
-	add_action( 'ucf_alert_display_classic_after', 'ucf_alert_display_classic_after', 10, 0 );
+	add_action( 'ucf_alert_display_default_after', 'ucf_alert_display_default_after', 10, 0 );
 
 }
 
