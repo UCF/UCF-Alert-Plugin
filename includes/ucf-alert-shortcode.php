@@ -6,7 +6,7 @@
 if ( !function_exists( 'sc_ucf_alert' ) ) {
 
 	function sc_ucf_alert( $atts, $content='' ) {
-		$atts = shortcode_atts( UCF_Alert_Config::get_option_defaults(), $atts, 'sc_ucf_alert' );
+		$atts = shortcode_atts( UCF_Alert_Config::get_option_defaults(), $atts, 'ucf-alert' );
 
 		ob_start();
 
