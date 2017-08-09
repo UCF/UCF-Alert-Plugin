@@ -51,7 +51,7 @@ if ( !function_exists( 'ucf_alert_display_default_before' ) ) {
 		<script type="text/html" id="<?php echo $id; ?>">
 			<div class="ucf-alert ucf-alert-default" data-alert-id="" role="alert">
 	<?php
-		echo ob_get_clean();
+		return ob_get_clean();
 	}
 
 	add_action( 'ucf_alert_display_default_before', 'ucf_alert_display_default_before', 10, 2 );
@@ -72,7 +72,7 @@ if ( !function_exists( 'ucf_alert_display_default' ) ) {
 			</div>
 		</a>
 	<?php
-		echo ob_get_clean();
+		return ob_get_clean();
 	}
 
 	add_action( 'ucf_alert_display_default', 'ucf_alert_display_default', 10, 2 );
@@ -87,7 +87,7 @@ if ( !function_exists( 'ucf_alert_display_default_after' ) ) {
 			</div>
 		</script>
 	<?php
-		echo ob_get_clean();
+		return ob_get_clean();
 	}
 
 	add_action( 'ucf_alert_display_default_after', 'ucf_alert_display_default_after', 10, 2 );
