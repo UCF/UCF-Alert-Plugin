@@ -10,7 +10,7 @@ if ( !function_exists( 'sc_ucf_alert' ) ) {
 
 		ob_start();
 
-		echo UCF_Alert_Common::display_alert( $atts['layout'] );
+		echo UCF_Alert_Common::display_alert( $atts['layout'], $atts );
 
 		return ob_get_clean(); // Shortcode must *return*!  Do not echo the result!
 	}
