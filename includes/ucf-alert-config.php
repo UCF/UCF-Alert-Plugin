@@ -146,7 +146,7 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				add_filter( 'option_{$option}', array( 'UCF_Alert_Config', 'format_option' ), 10, 2 );
 			}
 			// Shortcode atts
-			add_filter( 'shortcode_atts_sc_ucf_alert', array( 'UCF_Alert_Config', 'format_sc_atts' ), 10, 4 );
+			add_filter( 'shortcode_atts_ucf-alert', array( 'UCF_Alert_Config', 'format_sc_atts' ), 10, 4 );
 		}
 
 		/**
