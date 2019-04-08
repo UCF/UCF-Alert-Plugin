@@ -64,12 +64,10 @@ if ( !function_exists( 'ucf_alert_display_default' ) ) {
 		ob_start();
 	?>
 		<button type="button" class="ucf-alert-close" aria-label="Close alert"><span aria-hidden="true">&times;</span></button>
-		<a class="ucf-alert-content" href="<?php echo UCF_Alert_Config::get_option_or_default( 'alerts_url' ); ?>">
+		<a class="ucf-alert-content">
 			<strong class="ucf-alert-title"></strong>
 			<div class="ucf-alert-body"></div>
-			<div class="ucf-alert-cta">
-				<?php echo UCF_Alert_Config::get_option_or_default( 'cta' ); ?>
-			</div>
+			<div class="ucf-alert-cta"></div>
 		</a>
 	<?php
 		return ob_get_clean();

@@ -53,8 +53,10 @@
   function createAlert(alertData, $alertTemplate) {
     const $alert      = $($alertTemplate.html());
     const $alertInner = $alert.hasClass('ucf-alert') ? $alert : $alert.find('.ucf-alert');
+    const $alertLink  = $alert.find('.ucf-alert-content');
     const $title      = $alert.find('.ucf-alert-title');
     const $body       = $alert.find('.ucf-alert-body');
+    const $cta        = $alert.find('.ucf-alert-cta');
     const $closeBtn   = $alert.find('.ucf-alert-close');
 
     if ($alertInner.length) {
@@ -63,12 +65,20 @@
         .addClass(`ucf-alert-type-${alertData.type}`);
     }
 
+    if ($alertLink.length) {
+      $alertLink.attr('href', alertData.url);
+    }
+
     if ($title.length) {
       $title.text(alertData.title);
     }
 
     if ($body.length) {
       $body.text(alertData.description);
+    }
+
+    if ($cta.length) {
+      $cta.text(alertData.cta);
     }
 
     if ($closeBtn.length) {
@@ -141,7 +151,9 @@
         alertID: $newest.find('postID').text(),
         title: $newest.find('title').text(),
         description: $newest.find('description').text(),
-        type: $newest.find('alertType').text()
+        type: $newest.find('alertType').text(),
+        url: $newest.find('link').text(),
+        cta: $newest.find('cta').text()
       };
     }
 
