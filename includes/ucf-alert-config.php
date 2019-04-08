@@ -11,8 +11,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			$option_defaults = array(
 				'layout'           => 'default',
 				'feed_url'         => 'https://www.ucf.edu/alert/feed/?post_type=alert',
-				'alerts_url'       => 'https://www.ucf.edu/alert/',
-				'cta'              => 'More Information',
 				'domain'           => 'ucf.edu',
 				'refresh_interval' => 30,
 				'include_css'      => true,
@@ -40,8 +38,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			$defaults = self::$option_defaults; // don't use self::get_option_defaults() here (default options haven't been set yet)
 
 			add_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] );
-			add_option( self::$option_prefix . 'alerts_url', $defaults['alerts_url'] );
-			add_option( self::$option_prefix . 'cta', $defaults['cta'] );
 			add_option( self::$option_prefix . 'domain', $defaults['domain'] );
 			add_option( self::$option_prefix . 'refresh_interval', $defaults['refresh_interval'] );
 			add_option( self::$option_prefix . 'include_css', $defaults['include_css'] );
@@ -57,8 +53,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		 **/
 		public static function delete_options() {
 			delete_option( self::$option_prefix . 'feed_url' );
-			delete_option( self::$option_prefix . 'alerts_url' );
-			delete_option( self::$option_prefix . 'cta' );
 			delete_option( self::$option_prefix . 'domain' );
 			delete_option( self::$option_prefix . 'refresh_interval' );
 			delete_option( self::$option_prefix . 'include_css' );
@@ -78,8 +72,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 			// Apply default values configurable within the options page:
 			$configurable_defaults = array(
 				'feed_url'         => get_option( self::$option_prefix . 'feed_url', $defaults['feed_url'] ),
-				'alerts_url'       => get_option( self::$option_prefix . 'alerts_url', $defaults['alerts_url'] ),
-				'cta'              => get_option( self::$option_prefix . 'cta', $defaults['cta'] ),
 				'domain'           => get_option( self::$option_prefix . 'domain', $defaults['domain'] ),
 				'refresh_interval' => get_option( self::$option_prefix . 'refresh_interval', $defaults['refresh_interval'] ),
 				'include_css'      => get_option( self::$option_prefix . 'include_css', $defaults['include_css'] ),
@@ -171,8 +163,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 		public static function settings_init() {
 			// Register settings
 			register_setting( 'ucf_alert', self::$option_prefix . 'feed_url' );
-			register_setting( 'ucf_alert', self::$option_prefix . 'alerts_url' );
-			register_setting( 'ucf_alert', self::$option_prefix . 'cta' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'domain' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'refresh_interval' );
 			register_setting( 'ucf_alert', self::$option_prefix . 'include_css' );
@@ -197,30 +187,6 @@ if ( !class_exists( 'UCF_Alert_Config' ) ) {
 				array(  // extra arguments to pass to the callback function
 					'label_for'   => self::$option_prefix . 'feed_url',
 					'description' => 'The RSS feed URL to use for alerts from UCF\'s alert system.',
-					'type'        => 'text'
-				)
-			);
-			add_settings_field(
-				self::$option_prefix . 'alerts_url',
-				'UCF Alert URL',  // formatted field title
-				array( 'UCF_Alert_Config', 'display_settings_field' ), // display callback
-				'ucf_alert',  // settings page slug
-				'ucf_alert_section_general',  // option section slug
-				array(  // extra arguments to pass to the callback function
-					'label_for'   => self::$option_prefix . 'alerts_url',
-					'description' => 'The URL to point alert clickthroughs to.',
-					'type'        => 'text'
-				)
-			);
-			add_settings_field(
-				self::$option_prefix . 'cta',
-				'Alert Call-to-Action',  // formatted field title
-				array( 'UCF_Alert_Config', 'display_settings_field' ), // display callback
-				'ucf_alert',  // settings page slug
-				'ucf_alert_section_general',  // option section slug
-				array(  // extra arguments to pass to the callback function
-					'label_for'   => self::$option_prefix . 'cta',
-					'description' => 'Call-to-action blurb to display under the active alert.',
 					'type'        => 'text'
 				)
 			);
