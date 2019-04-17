@@ -3,7 +3,7 @@ Contributors: ucfwebcom
 Tags: ucf, alerts
 Requires at least: 4.7.3
 Tested up to: 4.7.3
-Stable tag: 1.0.0
+Stable tag: 2.0.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/copyleft/gpl-3.0.html
 
@@ -30,6 +30,11 @@ Note: jQuery is *required* for the JavaScript included with this plugin to work.
 
 
 == Changelog ==
+
+= 2.0.0 =
+* Removed plugin options for specifying global alert links and call-to-action text, in favor of using per-alert values provided by the Alert theme's RSS feed.
+* Updated default alert layout to remove references to deleted plugin options.
+* Updated plugin js to populate alert URL and CTA values.
 
 = 1.0.0 =
 * Initial release
