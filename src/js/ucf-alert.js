@@ -168,8 +168,8 @@
     const $alerts = $('.ucf-alert');
     if ($alerts.length) {
       $alerts.remove();
+      $(document).trigger('ucfalert.removed');
     }
-    $(document).trigger('ucfalert.removed');
   }
 
   function fetchAlert() {
