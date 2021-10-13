@@ -18,7 +18,6 @@ Head over to the [UCF Alert Plugin wiki](https://github.com/UCF/UCF-Alert-Plugin
 ## Changelog ##
 
 ### 2.0.1 ###
-
 Enhancements:
 * Updated packages and added linter configs, issue/PR templates and a CONTRIBUTING doc.
 * Added cache busting to enqueued assets.
