@@ -17,6 +17,14 @@ Head over to the [UCF Alert Plugin wiki](https://github.com/UCF/UCF-Alert-Plugin
 
 ## Changelog ##
 
+### 2.0.1 ###
+Enhancements:
+* Updated packages and added linter configs, issue/PR templates and a CONTRIBUTING doc.
+* Added cache busting to enqueued assets.
+
+Bug fixes:
+* Updated `ucfalert.removed` trigger to only fire when an alert is actually removed from the DOM.
+
 ### 2.0.0 ###
 * Removed plugin options for specifying global alert links and call-to-action text, in favor of using per-alert values provided by the Alert theme's RSS feed.
 * Updated default alert layout to remove references to deleted plugin options.

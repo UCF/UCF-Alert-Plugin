@@ -2,7 +2,7 @@
 /*
 Plugin Name: UCF Alert
 Description: Contains shortcode and functions for displaying latest alerts from ucf.edu/alert.
-Version: 2.0.0
+Version: 2.0.1
 Author: UCF Web Communications
 License: GPL3
 */

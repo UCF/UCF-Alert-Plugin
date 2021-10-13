@@ -3,7 +3,7 @@ Contributors: ucfwebcom
 Tags: ucf, alerts
 Requires at least: 4.7.3
 Tested up to: 5.3
-Stable tag: 2.0.0
+Stable tag: 2.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/copyleft/gpl-3.0.html
 
@@ -23,6 +23,14 @@ Head over to the [UCF Alert Plugin wiki](https://github.com/UCF/UCF-Alert-Plugin
 
 
 == Changelog ==
+
+= 2.0.1 =
+Enhancements:
+* Updated packages and added linter configs, issue/PR templates and a CONTRIBUTING doc.
+* Added cache busting to enqueued assets.
+
+Bug fixes:
+* Updated `ucfalert.removed` trigger to only fire when an alert is actually removed from the DOM.
 
 = 2.0.0 =
 * Removed plugin options for specifying global alert links and call-to-action text, in favor of using per-alert values provided by the Alert theme's RSS feed.
