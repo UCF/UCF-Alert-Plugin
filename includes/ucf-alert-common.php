@@ -94,12 +94,15 @@ if ( !function_exists( 'ucf_alert_display_default_after' ) ) {
 
 if ( ! function_exists( 'ucf_alert_enqueue_assets' ) ) {
 	function ucf_alert_enqueue_assets() {
+		$plugin_data = get_plugin_data( UCF_ALERT__PLUGIN_FILE, false, false );
+		$version     = $plugin_data['Version'];
+
 		// CSS
 		$include_css = UCF_Alert_Config::get_option_or_default( 'include_css' );
 		$css_deps = apply_filters( 'ucf_alert_style_deps', array() );
 
 		if ( $include_css ) {
-			wp_enqueue_style( 'ucf_alert_css', plugins_url( 'static/css/ucf-alert.min.css', UCF_ALERT__PLUGIN_FILE ), $css_deps, false, 'screen' );
+			wp_enqueue_style( 'ucf_alert_css', plugins_url( 'static/css/ucf-alert.min.css', UCF_ALERT__PLUGIN_FILE ), $css_deps, $version, 'screen' );
 		}
 
 		// JS
@@ -112,7 +115,7 @@ if ( ! function_exists( 'ucf_alert_enqueue_assets' ) ) {
 		$js_deps = apply_filters( 'ucf_alert_script_deps', $js_deps );
 
 		if ( $include_js ) {
-			wp_register_script( 'ucf_alert_js', plugins_url( 'static/js/ucf-alert.min.js', UCF_ALERT__PLUGIN_FILE ), $js_deps, false, true );
+			wp_register_script( 'ucf_alert_js', plugins_url( 'static/js/ucf-alert.min.js', UCF_ALERT__PLUGIN_FILE ), $js_deps, $version, true );
 			wp_localize_script( 'ucf_alert_js', 'UCFAlert', array(
 				'url' => UCF_Alert_Config::get_option_or_default( 'feed_url' ),
 				'refreshInterval' => UCF_Alert_Config::get_option_or_default( 'refresh_interval' ) * 1000,
