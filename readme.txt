@@ -2,7 +2,7 @@
 Contributors: ucfwebcom
 Tags: ucf, alerts
 Requires at least: 4.7.3
-Tested up to: 5.3
+Tested up to: 6.1
 Stable tag: 2.0.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/copyleft/gpl-3.0.html
@@ -23,6 +23,10 @@ Head over to the [UCF Alert Plugin wiki](https://github.com/UCF/UCF-Alert-Plugin
 
 
 == Changelog ==
+
+= 2.0.2 =
+Enhancements:
+* Added composer file.
 
 = 2.0.1 =
 Enhancements:

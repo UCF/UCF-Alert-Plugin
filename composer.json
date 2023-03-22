@@ -1,0 +1,8 @@
+{
+    "name": "ucf/ucf-alert-plugin",
+    "description": "Provides a shortcode, functions, and default styles for displaying UCF alerts.",
+    "type": "wordpress-plugin",
+    "require": {
+        "composer/installers": "~1.0"
+    }
+}
